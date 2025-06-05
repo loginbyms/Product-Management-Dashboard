@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            color: #2c3e50;
+        }
+        
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .form-section {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-section {
+            flex: 2;
+            min-width: 300px;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: #2c3e50;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #3498db;
+            display: inline-block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 15px;
+        }
+        
+        .card {
+            background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #eee;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-img {
+            height: 180px;
+            background: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+        
+        .card-img i {
+            font-size: 60px;
+            opacity: 0.8;
+        }
+        
+        .card-content {
+            padding: 20px;
+        }
+        
+        .card-title {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .card-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #27ae60;
+            margin: 10px 0;
+        }
+        
+        .card-desc {
+            color: #7f8c8d;
+            margin: 15px 0;
+            line-height: 1.5;
+        }
+        
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            color: #7f8c8d;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .status.in-stock {
+            background-color: rgba(39, 174, 96, 0.15);
+            color: #27ae60;
+        }
+        
+        .status.out-of-stock {
+            background-color: rgba(231, 76, 60, 0.15);
+            color: #e74c3c;
+        }
+        
+        .card-location {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #3498db;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #7f8c8d;
+        }
+        
+        .empty-state i {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #bdc3c7;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            header h1 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-box-open"></i> Product Management</h1>
+            <p>Add products to your inventory and manage them efficiently</p>
+        </header>
+        
+        <div class="main-content">
+            <section class="form-section">
+                <h2 class="section-title">Add New Product</h2>
+                <form id="productForm">
+                    <div class="form-group">
+                        <label for="productName">Product Name *</label>
+                        <input type="text" id="productName" required placeholder="Enter product name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productPrice">Price ($) *</label>
+                        <input type="number" id="productPrice" min="0" step="0.01" required placeholder="Enter price">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productDesc">Description *</label>
+                        <textarea id="productDesc" required placeholder="Describe the product features and benefits"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productUrl">Image URL</label>
+                        <input type="url" id="productUrl" placeholder="https://example.com/image.jpg">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productDate">Date Added *</label>
+                        <input type="date" id="productDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productStatus">Status *</label>
+                        <select id="productStatus" required>
+                            <option value="">Select Status</option>
+                            <option value="in-stock">In Stock</option>
+                            <option value="out-of-stock">Out of Stock</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productLocation">Location *</label>
+                        <input type="text" id="productLocation" required placeholder="e.g. Warehouse A, Shelf 5">
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Add Product <i class="fas fa-plus-circle"></i></button>
+                </form>
+            </section>
+            
+            <section class="card-section">
+                <h2 class="section-title">Product Inventory</h2>
+                <div class="cards-container" id="cardsContainer">
+                    <!-- Cards will be added here dynamically -->
+                    <div class="empty-state">
+                        <i class="fas fa-boxes"></i>
+                        <h3>No Products Added Yet</h3>
+                        <p>Submit a product using the form to see it displayed here</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // Set today's date as default
+        document.getElementById('productDate').valueAsDate = new Date();
+        
+        // Sample initial products
+        const sampleProducts = [
+            {
+                name: "Wireless Bluetooth Headphones",
+                price: 89.99,
+                description: "Premium noise-cancelling headphones with 30-hour battery life and comfortable over-ear design.",
+                url: "",
+                date: "2023-07-15",
+                status: "in-stock",
+                location: "Electronics Section"
+            },
+            {
+                name: "Stainless Steel Water Bottle",
+                price: 24.95,
+                description: "Double-walled insulated bottle that keeps drinks cold for 24 hours and hot for 12 hours.",
+                url: "",
+                date: "2023-07-20",
+                status: "out-of-stock",
+                location: "Kitchenware Aisle"
+            }
+        ];
+        
+        const form = document.getElementById('productForm');
+        const cardsContainer = document.getElementById('cardsContainer');
+        
+        // Function to create a product card
+        function createProductCard(product) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            
+            // Determine icon based on product category
+            const icon = product.name.toLowerCase().includes('headphone') ? 'fas fa-headphones' : 
+                         product.name.toLowerCase().includes('bottle') ? 'fas fa-wine-bottle' : 
+                         'fas fa-shopping-bag';
+            
+            card.innerHTML = `
+                <div class="card-img" style="background: ${product.url ? `url('${product.url}') center/cover` : '#3498db'}">
+                    ${product.url ? '' : `<i class="${icon}"></i>`}
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">${product.name}</h3>
+                    <div class="card-price">$${product.price.toFixed(2)}</div>
+                    <p class="card-desc">${product.description}</p>
+                    <div class="card-meta">
+                        <div>
+                            <div class="status ${product.status}">${product.status === 'in-stock' ? 'In Stock' : 'Out of Stock'}</div>
+                            <div class="card-date"><i class="far fa-calendar"></i> ${formatDate(product.date)}</div>
+                        </div>
+                        <div class="card-location">
+                            <i class="fas fa-map-marker-alt"></i> ${product.location}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+        
+        // Format date to readable format
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
+        }
+        
+        // Function to display products
+        function displayProducts(products) {
+            cardsContainer.innerHTML = '';
+            
+            if (products.length === 0) {
+                cardsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-boxes"></i>
+                        <h3>No Products Added Yet</h3>
+                        <p>Submit a product using the form to see it displayed here</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            products.forEach(product => {
+                const card = createProductCard(product);
+                cardsContainer.appendChild(card);
+            });
+        }
+        
+        // Initialize with sample products
+        displayProducts(sampleProducts);
+        
+        // Handle form submission
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const product = {
+                name: document.getElementById('productName').value,
+                price: parseFloat(document.getElementById('productPrice').value),
+                description: document.getElementById('productDesc').value,
+                url: document.getElementById('productUrl').value,
+                date: document.getElementById('productDate').value,
+                status: document.getElementById('productStatus').value,
+                location: document.getElementById('productLocation').value
+            };
+            
+            // Add to products array
+            sampleProducts.unshift(product);
+            
+            // Update display
+            displayProducts(sampleProducts);
+            
+            // Reset form
+            form.reset();
+            document.getElementById('productDate').valueAsDate = new Date();
+            
+            // Scroll to the new card
+            cardsContainer.scrollIntoView({ behavior: 'smooth' });
+            
+            // Show success message
+            alert('Product added successfully!');
+        });
+    </script>
+</body>
+</html>
